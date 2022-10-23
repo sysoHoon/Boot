@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idev.boot.dao.CommentsMapper">
+	<select id="getComments" parameterType="int" resultType="TimelineBoardComments">
+		SELECT * FROM timeline_board_comment WHERE timeline_board_id=#{timeline_board_id}
+	</select>
+	<insert id="insert" parameterType="TimelineBoardComments">
+		INSERT INTO timeline_board_comment (tcomment_id,timeline_board_id,id,content,filename)
+		VALUES (tcomment_seq.nextval,#{timeline_board_id},#{id},#{content},#{filename})
+
+	</insert>
+	<delete id="delete" parameterType="int">
+		DELETE FROM timeline_board_comment WHERE tcomment_id = #{tcomment_id}
+	</delete>
+</mapper>  

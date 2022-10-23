@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sellup.boot.dao.AdminMapper">
+	<select id="getPageList" 
+		parameterType="java.util.Map"
+		resultType="Admin">
+	SELECT * FROM 
+		(SELECT rownum r ,f.* from
+			(SELECT * FROM ADMIIN  
+			ORDER BY ADMIN_BOARD_ID DESC) f)
+	WHERE r BETWEEN #{startNo} AND #{endNo}
+	</select>
+	
+	<select id="getCount" resultType="int">
+	SELECT count(*) FROM ADMIN_BOARD
+	</select>
+
+	<select id="selectAll" resultType="Admin">
+	SELECT * FROM ADMIN_BOARD
+	</select>
+	
+	<select id="detail" parameterType="int" resultType="Admin">
+	select * from admin_board where admin_board_id = #{admin_board_id}
+	</select>
+	
+	<insert id="insert" parameterType="Admin">
+	insert into admin_board(admin_board_id,id,filename,title,content,wdate) 
+	values (admin_board_seq.nextval, #{id}, #{filename}, #{title}, #{content},sysdate)
+	</insert>
+	
+	<update id="update" parameterType="Admin">
+	update admin_board set title=#{title}, content=#{content} ,wdate=sysdate
+	where admin_board_id=#{admin_board_id}
+	</update>
+	
+	<select id="searchList" parameterType="PageDto" resultType="Admin">
+		SELECT * FROM 
+		(SELECT rownum r ,f.* from
+			(SELECT * FROM admin_board  
+				  <if test='"C".equals(field)'>  <!-- 파라미터 PageDto의 field 속성 -->
+				   where content like '%'|| #{findText} ||'%'
+				  </if>
+				  <if test='"N".equals(field)'>  
+				   where writer like '%'|| #{findText} ||'%' <!-- 파라미터 PageDto의 findText 속성 -->
+				  </if>
+				  <if test='"S".equals(field)'>
+				   where subject like '%'|| #{findText} ||'%'
+				  </if>
+				  <if test='"CS".equals(field)'>
+				   where content like '%'|| #{findText} ||'%'
+				   OR subject like '%'|| #{findText} ||'%'
+				  </if>    
+			ORDER BY admin_board_id DESC) f)
+		WHERE r BETWEEN #{startNo} AND #{endNo}
+	</select>
+	
+	<select id="searchCount" parameterType="PageDto" resultType="int">
+		SELECT count(*) FROM admin_board 
+				  <if test='"C".equals(field)'>  <!-- 파라미터 PageDto의 field 속성 -->
+				   where content like '%'|| #{findText} ||'%'
+				  </if>
+				  <if test='"N".equals(field)'>  
+				   where writer like '%'|| #{findText} ||'%' <!-- 파라미터 PageDto의 findText 속성 -->
+				  </if>
+				  <if test='"S".equals(field)'>
+				   where subject like '%'|| #{findText} || '%'
+				  </if>
+				  <if test='"CS".equals(field)'>
+				   where content like '%'|| #{findText} ||'%'
+				   OR subject like '%'|| #{findText} ||'%'
+				  </if>        
+	</select>
+</mapper> 

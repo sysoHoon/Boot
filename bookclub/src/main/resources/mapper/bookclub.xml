@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idev.book.dao.BookrentMapper"> 
+
+<!-- 문제 : 전체 책 목록 조회 -->
+ <select id="selectBooks"  resultType="BookDto">
+	 SELECT * FROM TBL_BOOK order by bcode
+ </select>
+ <!-- 문제 : 전체 대여 조회 -->
+ <select id="getRentList" resultType="BookRentDto">
+	SELECT * FROM TBL_BOOKRENT tb ORDER BY rent_no desc
+ </select>
+<!-- 문제 : 대여하기 -->
+ <insert id="insertRent" parameterType="BookRentDto">
+ 	INSERT INTO TBL_BOOKRENT (rent_no,MEM_IDX,BCODE,RENT_DATE,EXP_DATE)
+ values(bookrent_seq.nextval,#{mem_idx},#{bcode},sysdate,#{exp_date})
+ </insert>
+
+<!-- 회원 검색 -->
+ <select id="getMember"  resultType="BookMember" parameterType="int">
+ SELECT * FROM BOOK_MEMBER where mem_idx = #{mem_idx}
+ </select>
+<!-- 도서 검색 --> 
+ <select id="getBook"  resultType="BookDto" parameterType="String">
+ SELECT * FROM TBL_BOOK where bcode=#{bcode}
+ </select>
+ 
+ <!-- 대여 중인 도서를 도서코드로 조회 : null 이면 대여 중인 책이 아님-->
+ <select id="rentByBcode" resultType="BookRentDto" parameterType="BookRentDto">
+ select * from TBL_BOOKRENT where bcode = #{bcode} and return_date IS NULL
+ </select>
+  <!--  도서를 대여한 회원을 조회	 : null 이면 대여 중인 회원이 아님 -->
+ <select id="rentByMemidx" resultType="BookRentDto" parameterType="int">
+ select * from TBL_BOOKRENT where mem_idx = #{mem_idx} and return_date IS NULL
+ </select>
+
+ <!-- 현재 대여 중인 건수  -->
+  <select id="countRents" resultType="int">
+ 	SELECT count(*) FROM TBL_BOOKRENT tb WHERE return_date IS NULL
+ </select>
+  <!-- 반납날짜가 지난 경우 지연일수 업데이터 	 -->
+ <update id="updateDelays">
+  <![CDATA[
+  UPDATE TBL_BOOKRENT SET DELAY_DAYS = sysdate - EXP_DATE 
+  WHERE EXP_DATE < sysdate AND RETURN_DATE is null
+  ]]>
+ </update>
+ <!-- 대여 가능한 도서코드들 조회-->
+ <select id="bcodes" resultType="String">
+ SELECT bcode FROM TBL_BOOK 
+	MINUS 
+ SELECT bcode FROM TBL_BOOKRENT tb WHERE RETURN_DATE IS NULL
+ </select>
+
+</mapper>
+
+
+
+
+
+
+
+

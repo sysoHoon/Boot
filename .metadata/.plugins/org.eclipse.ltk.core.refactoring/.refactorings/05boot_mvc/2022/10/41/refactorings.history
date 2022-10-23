@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy element &apos;RestMemberController.java&apos; to &apos;bootjspBoard/src/main/java/com.idev.boot.controller&apos;&#x0A;- Original project: &apos;05boot_mvc&apos;&#x0A;- Destination element: &apos;bootjspBoard/src/main/java/com.idev.boot.controller&apos;&#x0A;- Original element: &apos;com.psh.boot.controller.RestMemberController.java&apos;" description="Copy compilation unit" destination="=bootjspBoard/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;com.idev.boot.controller" element1="/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;com.psh.boot.controller{RestMemberController.java" files="0" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1664797446754" units="1" version="1.0"/>
+</session>

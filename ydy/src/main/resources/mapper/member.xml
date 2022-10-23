@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ydy.boot.dao.MemberMapper">
+	<select id="selectAll" resultType="Member">
+	select * from member
+	</select>
+	
+	<select id="getOne" parameterType="int" resultType="Member">
+	select * from member where mno = #{mno}
+	</select>
+	
+	<select id="login" resultType="Member" parameterType="java.util.HashMap">
+	select * from member email = #{email} and password = #{password}
+	</select>
+	
+	<update id="changePW">
+	update member set password = #{newpass} where email = #{email} and password = #{password}
+	</update>
+	
+	<select id="checkEmail" resultType="int" parameterType="String">
+	select count(*) from member where email = #{email}
+	</select>
+
+	<insert id="addMember" parameterType="Member" keyColumn="mno" keyProperty="mno" useGeneratedKeys="true"> <!-- parameterType : 쿼리실행에 필요한 데이터 타입 -->
+			insert into member(mno,name,password,email,gender,hobby,addr,age) 
+			values (MEMBER_IDX_SEQ.NEXTVAL,#{name},#{password},#{email},#{gender},#{hobby},#{addr},#{age})
+	</insert>
+	
+	<update id="updateMember" parameterType="Member">
+	update member set email = #{email}, gender = #{gender}, addr = #{addr}, hobby = #{hobby}, age = #{age} where mno = #{mno}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+	delete from member where mno = #{mno}
+	</delete>
+	
+</mapper> 

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idev.boot.dao.FreeboardMapper">  
+   <!-- 검색 필요없을 때 -->
+	<select id="getPageList" 
+		resultType="TimelineBoard">
+	SELECT * FROM timeline_board order by timeline_board_id desc
+	</select>
+	
+	<select id="getCount" resultType="int">
+	SELECT count(*) FROM timeline_board
+	</select>
+	
+	<select id="detail" resultType="TimelineBoard" parameterType="int">
+	SELECT * FROM timeline_board WHERE timeline_board_id = #{timeline_board_id}
+	</select>
+	
+	<insert id="insert" parameterType="TimelineBoard">
+	insert into timeline_board(timeline_board_id,id,content,filename) 
+	values (timeline_board_seq.nextval, #{id},#{content},#{filename})
+	</insert>
+	
+	<update id="readcountUp" parameterType="int">
+	UPDATE timeline_board 
+	SET view_count = view_count +1 
+	WHERE timeline_board_id = #{timeline_board_id}
+	</update>
+
+	
+</mapper>  
